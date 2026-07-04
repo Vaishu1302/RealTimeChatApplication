@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="card shadow border-0 p-4">
+
+    <h2 class="mb-4">
+        👥 Users
+    </h2>
+
+    <div class="row">
+
+        {% for user in users %}
+
+        <div class="col-md-4 mb-4">
+
+            <div class="card shadow-sm border-0 h-100">
+
+                <div class="card-body text-center">
+
+                    {% if user.profile.profile_picture %}
+
+                    <img
+                    src="{{ user.profile.profile_picture.url }}"
+                    class="rounded-circle mb-3"
+                    width="80"
+                    height="80"
+                    style="
+                    object-fit:cover;
+                    border:3px solid #198754;
+                    ">
+
+                    {% else %}
+
+                    <img
+                    src="https://ui-avatars.com/api/?name={{ user.username }}&background=075E54&color=fff"
+                    class="rounded-circle mb-3"
+                    width="80"
+                    height="80">
+
+                    {% endif %}
+
+                    <h5>
+                        {{ user.username }}
+                    </h5>
+
+                    {% if user.profile.status %}
+
+                    <p class="text-success fw-bold">
+                        🟢 Online
+                    </p>
+
+                    {% else %}
+
+                    <p class="text-secondary fw-bold">
+                        ⚫ Offline
+                    </p>
+
+                    {% if user.profile.last_seen %}
+
+                    <small class="text-muted">
+
+                        Last Seen:
+                        {{ user.profile.last_seen|date:"d M Y h:i A" }}
+
+                    </small>
+
+                    {% endif %}
+
+                    {% endif %}
+                    <a
+                    href="{% url 'private_chat' user.id %}"
+                    class="btn btn-success w-100">
+
+                        💬 Start Chat
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% empty %}
+
+        <div class="col-12">
+
+            <div class="alert alert-info">
+
+                No users available.
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+    <a
+    href="{% url 'dashboard' %}"
+    class="btn btn-secondary mt-3">
+
+        ← Back to Dashboard
+
+    </a>
+
+</div>
+
+{% endblock %}

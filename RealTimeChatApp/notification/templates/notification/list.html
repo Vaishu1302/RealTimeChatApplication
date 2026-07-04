@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="card main-card p-4">
+
+<h3>
+
+🔔 Notifications
+
+</h3>
+
+<hr>
+
+{% for n in notification %}
+
+<div class="alert alert-info">
+
+{{ n.message }}
+
+<br>
+
+<small>
+
+{{ n.created_at }}
+
+</small>
+
+</div>
+
+{% empty %}
+
+<div class="alert alert-secondary">
+
+No Notifications
+
+</div>
+
+{% endfor %}
+
+</div>
+
+{% endblock %}

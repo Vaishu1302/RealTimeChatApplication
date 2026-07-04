@@ -1,0 +1,158 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-md-6">
+
+            <div class="card shadow-lg border-0 rounded-4">
+
+                <div class="card-body p-4">
+
+                    <h2 class="text-center mb-4">
+                        👥 Create Group
+                    </h2>
+
+                    <form
+                    method="POST"
+                    enctype="multipart/form-data">
+
+                        {% csrf_token %}
+
+                        <!-- Group Photo -->
+
+                        <div class="text-center mb-4">
+
+                            <img
+                            id="preview"
+                            src="https://ui-avatars.com/api/?name=Group&background=075E54&color=fff&size=150"
+                            class="rounded-circle shadow"
+                            width="120"
+                            height="120"
+                            style="object-fit:cover;">
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label class="form-label fw-bold">
+                                Group Photo
+                            </label>
+
+                            {{ form.group_photo }}
+
+                        </div>
+
+                        <!-- Group Name -->
+
+                        <div class="mb-3">
+
+                            <label class="form-label fw-bold">
+                                Group Name
+                            </label>
+
+                            {{ form.name }}
+
+                        </div>
+
+                        <!-- Members -->
+
+                        <div class="mb-3">
+
+                            <label class="form-label fw-bold">
+                                Select Members
+                            </label>
+
+                            <div
+                            class="border rounded p-3 bg-light"
+                            style="max-height:200px; overflow-y:auto;">
+
+                                {{ form.members }}
+
+                            </div>
+
+                        </div>
+
+                        <button
+                        type="submit"
+                        class="btn btn-success w-100">
+
+                            ➕ Create Group
+
+                        </button>
+
+                    </form>
+
+                    <a
+                    href="{% url 'group_list' %}"
+                    class="btn btn-outline-secondary w-100 mt-3">
+
+                        ← Back
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function(){
+
+        const fileInput =
+        document.querySelector(
+            'input[type="file"]'
+        );
+
+        if(fileInput){
+
+            fileInput.addEventListener(
+                "change",
+                function(e){
+
+                    if(
+                        e.target.files &&
+                        e.target.files[0]
+                    ){
+
+                        const reader =
+                        new FileReader();
+
+                        reader.onload =
+                        function(event){
+
+                            document.getElementById(
+                                "preview"
+                            ).src =
+                            event.target.result;
+
+                        }
+
+                        reader.readAsDataURL(
+                            e.target.files[0]
+                        );
+
+                    }
+
+                }
+            );
+
+        }
+
+    }
+);
+
+</script>
+
+{% endblock %}

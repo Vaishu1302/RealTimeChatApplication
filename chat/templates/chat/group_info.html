@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="card p-4 shadow">
+
+    <div class="text-center">
+
+        {% if group.group_photo %}
+
+        <img
+        src="{{ group.group_photo.url }}"
+        class="rounded-circle"
+        width="150"
+        height="150">
+
+        {% endif %}
+
+        <h2>
+            {{ group.name }}
+        </h2>
+
+        <p>
+            👑 Admin:
+            {{ group.admin.username }}
+        </p>
+
+        <p>
+            👥 Members:
+            {{ group.members.count }}
+        </p>
+
+    </div>
+
+    <hr>
+
+    <h5>
+        Group Members
+    </h5>
+
+    <ul>
+
+        {% for member in group.members.all %}
+
+        <li>
+
+            {{ member.username }}
+
+            {% if member == group.admin %}
+            👑
+            {% endif %}
+
+        </li>
+
+        {% endfor %}
+
+    </ul>
+
+</div>
+
+{% endblock %}

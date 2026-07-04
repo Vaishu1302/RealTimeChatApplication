@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chat Room</title>
+</head>
+<body>
+
+<h2>Room: {{ room_name }}</h2>
+
+<input
+    id="message-input"
+    type="text"
+    placeholder="Type a message..."
+>
+
+<button id="send-btn">
+    Send
+</button>
+
+<hr>
+
+<div id="chat-box"></div>
+
+<p id="typing-status"></p>
+
+<script>
+
+const roomName = "{{ room_name }}";
+
+const chatSocket = new WebSocket(
+    'ws://'
+    + window.location.host
+    + '/ws/chat/'
+    + roomName
+    + '/'
+);
+
+chatSocket.onmessage = function(e){
+
+    const data = JSON.parse(e.data);
+
+    if(data.typing){
+
+        document.getElementById(
+            'typing-status'
+        ).innerHTML =
+        data.user + " is typing...";
+
+        setTimeout(function(){
+
+            document.getElementById(
+                'typing-status'
+            ).innerHTML = '';
+
+        }, 1000);
+    }
+
+    if(data.message){
+
+        document.getElementById(
+            'chat-box'
+        ).innerHTML +=
+        '<p>' + data.message + '</p>';
+    }
+};
+
+document.getElementById(
+    'send-btn'
+).onclick = function(){
+
+    const message =
+    document.getElementById(
+        'message-input'
+    ).value;
+
+    chatSocket.send(
+        JSON.stringify({
+            message: message
+        })
+    );
+
+    document.getElementById(
+        'message-input'
+    ).value = '';
+};
+
+const messageInput =
+document.getElementById(
+    'message-input'
+);
+
+let typingTimer;
+
+messageInput.addEventListener(
+    'keyup',
+    function(){
+
+        clearTimeout(
+            typingTimer
+        );
+
+        typingTimer =
+        setTimeout(
+            function(){
+
+                chatSocket.send(
+                    JSON.stringify({
+                        typing: true
+                    })
+                );
+
+            },
+            300
+        );
+
+    }
+);
+
+</script>
+
+</body>
+</html>

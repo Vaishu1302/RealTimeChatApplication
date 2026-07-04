@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-md-6">
+
+            <div class="card shadow border-0">
+
+                <div class="card-body p-4">
+
+                    <h3 class="text-center mb-4">
+                        ✏️ Edit Group
+                    </h3>
+
+                    <form
+                    method="POST"
+                    enctype="multipart/form-data">
+
+                        {% csrf_token %}
+
+                        <div class="text-center mb-4">
+
+                            {% if group.group_photo %}
+
+                                <img
+                                src="{{ group.group_photo.url }}"
+                                class="rounded-circle"
+                                width="120"
+                                height="120"
+                                style="object-fit:cover;">
+
+                            {% else %}
+
+                                <img
+                                src="https://ui-avatars.com/api/?name={{ group.name }}"
+                                class="rounded-circle">
+
+                            {% endif %}
+
+                        </div>
+
+                        <label class="form-label">
+                            Group Name
+                        </label>
+
+                        <input
+                        type="text"
+                        name="group_name"
+                        value="{{ group.name }}"
+                        class="form-control mb-3">
+
+                        <label class="form-label">
+                            Change Group Photo
+                        </label>
+
+                        <input
+                        type="file"
+                        name="group_photo"
+                        class="form-control mb-3">
+
+                        <button
+                        type="submit"
+                        class="btn btn-success w-100">
+
+                            Save Changes
+
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
